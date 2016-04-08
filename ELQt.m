@@ -20,14 +20,20 @@ solar_mass = (AU^3.0)*(0.01720209895/86400)^2.0;
 t0 = t0/solar_mass;
 tf = tf/solar_mass;
 
-options = odeset('RelTol', 1e-4);
-tspan = [0:Ntimes-1];
-tspan = (tf-t0)*tspan/(Ntimes-1) + t0; 
-%[trange, solution] = ode45(@ELQdots,[t0 tf],[E0 L0 Q0], options);
+%options = odeset('RelTol', 1e-4); % value from curt's older uses
+options = odeset('RelTol', 1e-6);
+tspan = linspace(t0,tf,Ntimes);
+
+% solve once with equally spaced time values
 [trange, solution] = ode45(@ELQdots,tspan,[E0 L0 Q0], options);
 
 
-% determine a better spacing in time
+% determine a better spacing in time (to get evenly spaced energy values)
+%
+% Curt had this in here. Not sure needed -- doubling the work?
+% We could spline to get a better spacing, but if we had a very course
+% spacing to begin with, that could introduce significant error.
+%
 Et = solution(:,1);
 Erange = linspace(Et(1), Et(end), Ntimes);
 tspan = spline(Et, trange, Erange);

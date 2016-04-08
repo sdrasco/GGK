@@ -16,6 +16,9 @@ if (ra < rp)
     disp('stopped');
 end
 
+% steve's counter to see how many times this got called...
+%display('ode got called');
+
 if (ra ~= real(ra)) || (rp ~= real(rp) )
     disp('complex roots');
     disp('stopped');
