@@ -12,7 +12,7 @@ M = 250;
 mu = 1.4;
 t0=0;
 tspan = 59.71;
-SmallSteps = 3e6;
+SmallSteps = 1e5;
 coords = 'spherical';
 BigSteps = 20;
 tol = 1e-6;
@@ -30,9 +30,9 @@ S = phase_InitializeWaveform(a, e0, p0, iota0_deg, phase0, M, mu, tspan, SmallSt
 clear a e0 p0 iota0_deg r0 theta0_deg phi0_deg sign_rdot0 sign_Tdot0 M mu t0 tspan SmallSteps coords BigSteps tol D thetasb_deg phisb_deg theta_k_deg phi_k_deg order phase0
 
 % observe the waveform
-order = 'quadrupole';
+h.t = S.x.t;
 h.robs = 1;
 h.thetaobs = 45;
 h.phiobs = 0;
-h.order = order;
-[h.hplus h.hcross]=ObserveWaveform(S, h.robs, h.thetaobs, h.phiobs, h.order);
+h.order = 'quadrupole';
+[h.plus h.cross]=ObserveWaveform(S, h.robs, h.thetaobs, h.phiobs, h.order);

@@ -16,8 +16,9 @@ if (ra < rp)
     disp('stopped');
 end
 
-% steve's counter to see how many times this got called...
-%display('ode got called');
+% steve's counter to see how many times this got called
+%global counter
+%counter = counter+1;
 
 if (ra ~= real(ra)) || (rp ~= real(rp) )
     disp('complex roots');
@@ -32,18 +33,14 @@ s = M/p;
 cosi = cos(iota);
 sini = sin(iota);
 
+% this block gave better agreement with what Curt called Gair-plots
 dy(1) = Edot_mod(p,iota,e);   %eq.20, with GHK replaced by "2PN" for Edot terms and "mod" for Ldot and Qdot
-
 dy(2) = Ldot_mod(p,iota,e);    %eqs. 59,45, and 57
-
 dy(3) = Qdot_mod(p,iota,e,Q);%eqs. 60, 56, 57 and 58
 
+% alternate block (inline comments suggest same, but they are not)
 %dy(1) = Edot_2pn(p,iota,e);   %eq.20, with GHK replaced by "2PN" for Edot terms and "mod" for Ldot and Qdot
-
-%dy(1) = Edot_mod(p,iota,e); 
-
 %dy(2) = Ldot_2pn(p,iota,e);    %eqs. 59,45, and 57
-
 %dy(3) = sqrt(Q)* Qdot_over_sqrtQ_2pn(p,iota,e);
 
 dy = dy';

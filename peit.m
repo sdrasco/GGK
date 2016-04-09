@@ -24,11 +24,22 @@ iota_deg0 = GeometricIota(hughes_iota_deg, a_over_M, e0, p0, tol);
 E0 = E0*m;
 L0 = L0*M*m;
 Q0 = Q0*M*M*m*m;
-[trange, Et, Lt, Qt] = ELQt(E0,L0,Q0,t0,tf,Ntimes,M1,spin1,M2);
-%[pt, et, iotat] = p_e_iota(Et,Lt,Qt,M1,spin1,M2);
-% functions should be re-written with .* (etc) instead of * to make above
-% operation possible
 
+% turn on this clumsy counter to see how many times ODE is evaluated
+% must also be turned on in ELQdots.m, and display turned on below
+%global counter;
+%counter = 0;
+
+% integrate to get E(t) etc
+[trange, Et, Lt, Qt] = ELQt(E0,L0,Q0,t0,tf,Ntimes,M1,spin1,M2);
+
+% Loop to translate ELQ to pei.
+%
+% Note: would be nice to just do 
+%
+%   [pt, et, iotat] = p_e_iota(Et,Lt,Qt,M1,spin1,M2);
+%
+% Limited by root finding in rp_ra.m
 Npts = length(trange);
 pt = zeros(Npts,1);
 et = zeros(Npts,1);
@@ -36,12 +47,6 @@ iotat = zeros(Npts,1);
 for i = 1:Npts
    [pt(i), et(i), iotat(i)] = p_e_iota(Et(i),Lt(i),Qt(i),M1,spin1,M2); 
 end  
-%figure
-%plot(trange,pt)
-%figure
-%plot(trange,et)
-%figure
-%plot(trange,iotat)
-%disp('stopped');
 
-
+% show counter results (turn on to see how many times ODE is called)
+%display(['calls to ODE:' num2str(counter)]);

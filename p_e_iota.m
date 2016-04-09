@@ -13,8 +13,8 @@ m = M2;
 rt = rp_ra(E,L,Q);
 ra = rt(1);
 rp = rt(2);
-p = 2*ra*rp/(M*(ra+rp));
-e = (ra-rp)/(ra+rp);
+p = 2*ra.*rp./(M*(ra+rp));
+e = (ra-rp)./(ra+rp);
 iota = atan2(sqrt(Q),abs(L));
 
 
