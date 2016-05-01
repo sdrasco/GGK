@@ -11,19 +11,12 @@ Q = y(3);
 r = rp_ra(E,L,Q);
 ra = r(1);
 rp = r(2);
+
 if (ra < rp)
     disp('wrong root order');
-    disp('stopped');
+    error('stopped');
 end
 
-% steve's counter to see how many times this got called
-%global counter
-%counter = counter+1;
-
-if (ra ~= real(ra)) || (rp ~= real(rp) )
-    disp('complex roots');
-    disp('stopped');
-end
 p = 2*ra*rp/(ra+rp);
 e = (ra-rp)/(ra+rp);
 iota = atan2(sqrt(Q),abs(L));

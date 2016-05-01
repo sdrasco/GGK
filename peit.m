@@ -25,11 +25,6 @@ E0 = E0*m;
 L0 = L0*M*m;
 Q0 = Q0*M*M*m*m;
 
-% turn on this clumsy counter to see how many times ODE is evaluated
-% must also be turned on in ELQdots.m, and display turned on below
-%global counter;
-%counter = 0;
-
 % integrate to get E(t) etc
 [trange, Et, Lt, Qt] = ELQt(E0,L0,Q0,t0,tf,Ntimes,M1,spin1,M2);
 
@@ -47,6 +42,3 @@ iotat = zeros(Npts,1);
 for i = 1:Npts
    [pt(i), et(i), iotat(i)] = p_e_iota(Et(i),Lt(i),Qt(i),M1,spin1,M2); 
 end  
-
-% show counter results (turn on to see how many times ODE is called)
-%display(['calls to ODE:' num2str(counter)]);
