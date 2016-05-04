@@ -51,9 +51,15 @@ for i=1:length(t)
 
     % compute geodesic structure
     inspiral.geodesic{i} = KerrGeodesic(a, e(i), p(i), iota_deg(i), tol);
-    display(['Geodesic ' num2str(i) '/' num2str(length(t)) ' done in ' ...
-        num2str(inspiral.geodesic{i}.CPUsec) ' seconds']);
-    %inspiral.lambda(i) = t(i) / inspiral.geodesic{i}.Gamma;
+    
+    % status report on time.
+    if i == 1
+        SecSpent = [];
+    end
+    SecSpent = [SecSpent; inspiral.geodesic{i}.CPUsec];
+    SecLeft =  round((length(t) - i) * mean(SecSpent));
+    display(['Computed Geodesic ' num2str(i) '/' num2str(length(t)) ...
+        '.  About ' num2str(SecLeft) ' sec remaining.']);
     
     % build matrices of coefficients to be used for spline fits
     tn = [tn inspiral.geodesic{i}.tn];

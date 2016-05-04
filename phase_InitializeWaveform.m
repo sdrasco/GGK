@@ -76,7 +76,7 @@ end
 if SmallSteps < 1
     error('We require SmallSteps > 1.');
 end
-if BigSteps < 3 || BigSteps > SmallSteps
+if BigSteps && (BigSteps < 3 || BigSteps > SmallSteps)
     error('We require 2 < BigSteps < SmallSteps.');
 end
 if ~strcmp(coords,'spherical') && ~strcmp(coords,'spheroidal')

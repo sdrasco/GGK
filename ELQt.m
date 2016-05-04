@@ -20,41 +20,43 @@ solar_mass = (AU^3.0)*(0.01720209895/86400)^2.0;
 t0 = t0/solar_mass;
 tf = tf/solar_mass;
 
-% set accuracy tollerance (older code used 1e-4 without disaster)
-options = odeset('RelTol', 1e-6,'Events',@StopCondition);
+% set accuracy tollerance very high.  This ODE isn't expensive to solve, 
+% and near merger, small errors in orbital parameters can push us over 
+% separatrix into nonphysical orbits.
+options = odeset('RelTol', 1e-12,'Events',@StopCondition);
 
 % solve the ODEs
 sol = ode45(@ELQdots,[t0 tf],[E0 L0 Q0], options);
-trange = sol.x;
-Et = sol.y(1,:);
-Lt = sol.y(2,:);
-Qt = sol.y(3,:);
+display(sprintf('status: %d calls to flux ODEs with RelTol set to %0.1e',sol.stats.nfevals,options.RelTol));
 
 % If wanted, restrict to specified number of geodesics (otherwise Ntimes
 % aka BigSteps will be ignored)
-% if length(sol.x) ~= Ntimes
-%     tspan = linspace(sol.x(1),sol.x(end),Ntimes);
-%     trange = tspan;
-%     solution = deval(sol,trange); % uses ode45's native interpolation
-%     Et = solution(1,:);
-%     Lt = solution(2,:);
-%     Qt = solution(3,:);
-% else
-%     trange = sol.x;
-%     Et = sol.y(1,:);
-%     Lt = sol.y(2,:);
-%     Qt = sol.y(3,:);
-% end
+if Ntimes
+    trange = linspace(sol.x(1),sol.x(end),Ntimes);
+    solution = deval(sol,trange); % uses ode45's native interpolation
+    Et = solution(1,:);
+    Lt = solution(2,:);
+    Qt = solution(3,:);
+else
+    trange = sol.x;
+    Et = sol.y(1,:);
+    Lt = sol.y(2,:);
+    Qt = sol.y(3,:);
+end
 
 %converting trange from solar mass to sec
 trange = trange*solar_mass;
 
 end
 
-function [value,isterminal,direction] = StopCondition(t,y)
+function[value,isterminal,direction] = StopCondition(t,y)
+% Would be great to have a generic way to stop the integration.  For now
+% just set to some minimum p.  For simple cases (circular, schwarszchild)
+% the minimum p is easy to know, but for generic cases it isn't.  If
+% a better stopping condition isn't determined, probably p_stop should be
+% turned into an argument and controlled elsewhere.
 
 global M;
-
 E = y(1);
 L = y(2); 
 Q = y(3);
@@ -62,15 +64,10 @@ r = rp_ra(E,L,Q);
 ra = r(1);
 rp = r(2);
 p = 2*ra*rp/(ra+rp);
-e = (ra-rp)/(ra+rp);
+e = (ra-rp)/(ra+rp); % not used, but maybe needed at some point
+p_stop = 6.02;
 
-% Would be great to have a good way to stopping the integration.  For now
-% just set to some minimum p and or e.  If a better stopping
-% condition isnt' determined, turn p_stop and e_stop into arguments and
-% contol their values elsewhere.
-p_stop = 6.6;
-e_stop = 1.375e-2;
-if p/M < p_stop || e < e_stop
+if p/M < p_stop
    value = 0; % we met the condition, will stop integration now
 else
    value = 1; % any number other than 0 to say we haven't met condition

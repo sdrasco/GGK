@@ -9,8 +9,10 @@ s = M/p;
 cosi = cos(iota);
 sini = sin(iota);
 
-result = sqrt(Q)*(Qdot_over_sqrtQ_2pn(p,iota,e) - ((1-e*e)^1.5)*Qdot_over_sqrtQ_2pn(p,iota,0) ...
-    +2.0*((1-e*e)^1.5)*tan(iota)*(Ldot_fit(p,iota,e) + sqrtQ_oversin2i_iotadot_fit(p,iota,e) ));
-
-%disp('stopping here');
-%disp('stopped');
+% use GG's prefered equation if not very circular, otherwise go to fit.
+if e > 1e-11
+    result = sqrt(Q)*(Qdot_over_sqrtQ_2pn(p,iota,e) - ((1-e*e)^1.5)*Qdot_over_sqrtQ_2pn(p,iota,0) ...
+        +2.0*((1-e*e)^1.5)*tan(iota)*(Ldot_fit(p,iota,e) + sqrtQ_oversin2i_iotadot_fit(p,iota,e) ));
+else
+    result = sqrt(Q)*2.0*((1-e*e)^1.5)*tan(iota)*(Ldot_fit(p,iota,e) + sqrtQ_oversin2i_iotadot_fit(p,iota,e) );
+end

@@ -1,8 +1,8 @@
 % fiducial choice
-a = 1e-2;
-e0 = 0.12; % trouble if we get beyond e ~ 0.01.  Add circular code...
+a = 0;
+e0 =34e-4; % long-run NR paper uses 34e-5, but that is too small for us.
 p0 =27.8;
-iota0_deg = 15;
+iota0_deg = 65;
 r0 = p0 / ( 1 - e0);
 theta0_deg = 90;
 phi0_deg = 0;
@@ -11,11 +11,10 @@ sign_Tdot0 = -1;
 M = 3.981250000000000e+01;
 mu = M/7;
 t0=0;
-%tspan = 0.2468;
 tspan = 30;  % this is in seconds.  NR paper shows ~ 23-24 seconds.
 SmallSteps = 1e5;
 coords = 'spherical';
-BigSteps = 5;
+BigSteps = false;  % set to a number if you want to control how many geodesics get made
 tol = 1e-6;
 D = 1.e17;
 thetasb_deg = 45;

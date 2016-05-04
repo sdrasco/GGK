@@ -14,15 +14,22 @@ c1 = 2.0*M*((L - a*E)^2 + Q);
 c0 = -Q*a^2;
 p = [c4 c3 c2 c1 c0];
 
+% find roots analytically
 r = roots(p);
-%note: first root r[1] is ra (the larger one), and r[2] is rp
 
-% interrupt calculation if this fails
-if ~isreal(r(1)) || ~isreal(r(2))
-    error('rp_ra(): unable to find real values of rp and ra.');
+% zero any complex roots
+r(find(~isreal(r))) = 0;
+
+% note: Often the first root r(1) is ra (the larger one), and r(2) 
+% is rp.  However, roots() doesn't return things sorted by size, so reorder
+% them by hand.  This is important near merger.
+r = flip(sort(r));
+
+% if we don't have two real roots, we faild.
+if r(1) == 0 || r(2) == 0
+   error('rp_ra(): unable to find real values of rp and ra.');
 end
-    
-    
 
 
+end
 
