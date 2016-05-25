@@ -1,8 +1,12 @@
 % fiducial choice
 a = 0.5;
-e0 = 0.8;
+e0 = 0.1;
 p0 =10;
 iota0_deg = 33;
+% a = 0.9;
+% e0 = 0.1;
+% p0 = 9.0;
+% iota0_deg = 45.0;
 r0 = p0 / ( 1 - e0);
 theta0_deg = 90;
 phi0_deg = 0;
@@ -15,7 +19,7 @@ tspan = 59.71;
 SmallSteps = 1e5;
 coords = 'spherical';
 BigSteps = 20;
-tol = 1e-6;
+tol = 1e-9;
 D = 1.e17;
 thetasb_deg = 45;
 phisb_deg = 150;

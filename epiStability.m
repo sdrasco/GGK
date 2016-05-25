@@ -30,12 +30,12 @@ output.A.mu = mu;
 
 % plus parameters
 mup = mu*(1.0+eps);
-[tp, pp, ep, ip, Ep, Lp, Qp] = peitELQ(p0,e0,iota_hughes_deg0*pi/180,...
+[tp, pp, ep, ip, Ep, Lp, Qp] = EvolveOrbit(p0,e0,iota_hughes_deg0*pi/180,...
    t0*SecPerM,t0*SecPerM + tspan,BigSteps,M,a*M,mup);
       
 % build minus parameters
 mum = mu*(1.0-eps);
-[tm, pm, em, im, Em, Lm, Qm] = peitELQ(p0,e0,iota_hughes_deg0*pi/180,...
+[tm, pm, em, im, Em, Lm, Qm] = EvolveOrbit(p0,e0,iota_hughes_deg0*pi/180,...
     t0*SecPerM,t0*SecPerM + tspan,BigSteps,M,a*M,mum);
 
 % just in case eps isn't well represented in memory

@@ -145,7 +145,7 @@ waveform.SecPermu = waveform.SecPerMsun * waveform.mu;
 
 % evolve the principle orbital elements: 
 % make a trajectory e(t) p(t) iota(t), using a big time step
-[t, p, e, iota_hughes_rad, E, L, Q] = peit_ELQ(p0,e0,waveform.iota_hughes_deg0*pi/180,...
+[t, p, e, iota_hughes_rad, E, L, Q] = EvolveOrbit(p0,e0,waveform.iota_hughes_deg0*pi/180,...
     t0*waveform.SecPerM,t0*waveform.SecPerM + tspan,BigSteps,M,a*M,mu);
 waveform.t = t;
 waveform.p = p;

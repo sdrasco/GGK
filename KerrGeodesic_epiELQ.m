@@ -377,6 +377,12 @@ orbit.phin = phin;
 orbit.CPUsec = cputime - InitialCPUtime;
 orbit.tol = tol;
 
+% Compute <cot^2 theta> and <cos^2 theta>, quantitites that are used when
+% computing Qdot from teukolsky fluxes
+ignd_avgcot2 = @(chi) cot(Theta(chi)).^2 .* dwdchi(chi);
+ignd_avgcos2 = @(chi) cos(Theta(chi)).^2 .* dwdchi(chi);
+orbit.avgcot2 = quadl(@(x)ignd_avgcot2(x) , 0, pi, min(tol,1e-9))/pi;
+orbit.avgcos2 = quadl(@(x)ignd_avgcos2(x) , 0, pi, min(tol,1e-9))/pi;
 
 % a version of quadl which takes a vector input 
 % for the integral's outer boundary

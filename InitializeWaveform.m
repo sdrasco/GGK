@@ -39,16 +39,16 @@ function waveform = InitializeWaveform(S)
 %    SecPerMsun: the value used for a solar mass in seconds
 %       SecPerM: M in seconds
 %      SecPermu: mu in seconds
-%             t: coordinate time in seconds from Curt's PEIT program
-%             e: eccentricity as a function of t from PEIT
-%             p: semilatus rectum as a function of t from PEIT
+%             t: coordinate time in seconds from EVOLOVEORBIT
+%             e: eccentricity as a function of t from EVOLOVEORBIT
+%             p: semilatus rectum as a function of t from EVOLOVEORBIT
 %      iota_deg: geometric inclination (in degrees) as a functin of t
 %    SplineData: output structure from call to KLUDGEDINSPIRAL
 %             x: output structure from call to KLUDGEDXOFL
 %             h: output structure from call to OBESRVEWAVEFORM
 %        CPUsec: computation time for creating this structure, in seconds.
 %
-% See also PEIT, KLUDGEDINSPIRAL, KLUDGEDXOFL OBSERVEWAVEFORM
+% See also EVOLOVEORBIT, KLUDGEDINSPIRAL, KLUDGEDXOFL OBSERVEWAVEFORM
 % 
 % By: Steve Drasco
 % 
@@ -145,7 +145,7 @@ waveform.SecPermu = waveform.SecPerMsun * waveform.mu;
 
 % evolve the principle orbital elements: 
 % make a trajectory e(t) p(t) iota(t), using a big time step
-[t, p, e, iota_hughes_rad] = peit(p0,e0,waveform.iota_hughes_deg0*pi/180,...
+[t, p, e, iota_hughes_rad, Et, Lt, Qt] = EvolveOrbit(p0,e0,waveform.iota_hughes_deg0*pi/180,...
     t0*waveform.SecPerM,t0*waveform.SecPerM + tspan,BigSteps,M,a*M,mu);
 waveform.t = t;
 waveform.p = p;

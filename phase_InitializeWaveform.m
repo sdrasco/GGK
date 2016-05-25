@@ -1,6 +1,6 @@
 function waveform = phase_InitializeWaveform(a, e0, p0, iota_deg0, phase0, M, mu, tspan, SmallSteps, BigSteps, tol, coords)
 % 
-% waveform = InitializeWaveform(a, e0, p0, iota_deg0, phase0, M1, M2, tspan, SmallSteps, BigSteps, tol, coords)
+% waveform = phase_InitializeWaveform(a, e0, p0, iota_deg0, phase0, M1, M2, tspan, SmallSteps, BigSteps, tol, coords)
 %
 % Given input parameters, 
 %
@@ -32,16 +32,16 @@ function waveform = phase_InitializeWaveform(a, e0, p0, iota_deg0, phase0, M, mu
 %    SecPerMsun: the value used for a solar mass in seconds
 %       SecPerM: M in seconds
 %      SecPermu: mu in seconds
-%             t: coordinate time in seconds from Curt's PEIT program
-%             e: eccentricity as a function of t from PEIT
-%             p: semilatus rectum as a function of t from PEIT
+%             t: coordinate time in seconds from EVOLOVEORBIT
+%             e: eccentricity as a function of t from EVOLOVEORBIT
+%             p: semilatus rectum as a function of t from EVOLOVEORBIT
 %      iota_deg: geometric inclination (in degrees) as a functin of t
 %    SplineData: output structure from call to KLUDGEDINSPIRAL
 %             x: output structure from call to KLUDGEDXOFL
 %             h: output structure from call to OBESRVEWAVEFORM
 %        CPUsec: computation time for creating this structure, in seconds.
 %
-% See also PEIT, KLUDGEDINSPIRAL, KLUDGEDXOFL OBSERVEWAVEFORM
+% See also EVOLOVEORBIT, KLUDGEDINSPIRAL, KLUDGEDXOFL OBSERVEWAVEFORM
 % 
 % By: Steve Drasco
 % 
@@ -59,11 +59,6 @@ end
 if iota_deg0 > 180 || iota_deg0 < 0
     error('We require 0 < iota_deg0 < 180.');
 end
-%for i=1:4
-%    if phase0(i) < 0 || phase0(i) > 2*pi
-%        error('Though it''s not necessary, we require 0 < phase0 < 2pi.');
-%    end
-%end
 if M < 0
     error('We require M > 0.');
 end
@@ -97,11 +92,14 @@ waveform.BigSteps = BigSteps;
 waveform.tol = tol;
 waveform.coords = coords;
 
-% make a trajectory e(t) p(t) iota(t), using a big time step
-[t, p, e, iota_hughes_rad] = peit(p0,e0,waveform.iota_hughes_deg0*pi/180,0,tspan,BigSteps,M,a*M,mu);
+% make a trajectory e(t) p(t) iota(t)
+[t, p, e, iota_hughes_rad, E, L, Q] = EvolveOrbit(p0,e0,waveform.iota_hughes_deg0*pi/180,0,tspan,BigSteps,M,a*M,mu);
 waveform.t = t;
 waveform.p = p;
 waveform.e = e;
+waveform.E = E;
+waveform.L = L;
+waveform.Q = Q;
 
 % translate to geometric definition of inclination
 iota_deg = zeros(size(iota_hughes_rad));

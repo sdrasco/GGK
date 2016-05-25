@@ -8,11 +8,14 @@ function p = innermost(a, e, iota_deg)
 %
 % Steve Drasco (May, 2009)
 %
+% Edit: May 2016 (!) DO NOT USE.  This code is not correct.  It finds dVr/dr = 0, which
+% happens at three places, none of which are the innermost stable orbit.  
+%
 
 % set accuracy request
 options = optimset('TolX',1e-6);
 
-pGuess = 3;
+pGuess = 6;
 p = fzero(@(p) dVrdr(p, a, e, iota_deg), pGuess, options);
 
 end
