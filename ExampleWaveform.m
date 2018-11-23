@@ -36,3 +36,13 @@ h.thetaobs = 45;
 h.phiobs = 0;
 h.order = 'quadrupole';
 [h.plus h.cross]=ObserveWaveform(S, h.robs, h.thetaobs, h.phiobs, h.order);
+
+% plot hplus vs time, print it to file ExampleWaveform.eps 
+plot(S.x.t,h.plus);
+set(gca,'fontsize',18);
+ylabel('h_+');
+xlabel('time (s)');
+Mstring = num2str(S.M,'%3.2e');
+mustring = num2str(S.mu,'%3.2e');
+title(['M/M_{sun} = ' Mstring ',    \mu/M_{sun} = ' mustring]);
+print -depsc ExampleWaveform.eps
