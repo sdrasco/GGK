@@ -38,7 +38,7 @@ h.order = 'quadrupole';
 [h.plus h.cross]=ObserveWaveform(S, h.robs, h.thetaobs, h.phiobs, h.order);
 
 % plot hplus vs time, print it to file ExampleWaveform.eps 
-plot(S.x.t,h.plus);
+plot(S.x.t,h.plus/max(h.plus));
 set(gca,'fontsize',18);
 ylabel('h_+');
 xlabel('time (s)');
